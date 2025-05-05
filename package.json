@@ -1,0 +1,48 @@
+{
+	"name": "wp-admin-css-editor",
+	"version": "1.0.0",
+	"description": "A plugin to enable easier management of Customizer and Block Editor Custom CSS.",
+	"author": {
+		"name": "George Stephanis",
+		"url": "https://georgestephanis.wordpress.com"
+	},
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"wordpress",
+		"scaffold"
+	],
+	"homepage": "https://github.com/georgestephanis/wp-admin-css-editor/",
+	"repository": "https://github.com/georgestephanis/wp-admin-css-editor/",
+	"bugs": "https://github.com/georgestephanis/wp-admin-css-editor/issues",
+	"private": false,
+	"engines": {
+		"node": ">=20.0",
+		"npm": ">=10.0"
+	},
+	"browserslist": [
+		"extends @wordpress/browserslist-config"
+	],
+	"devDependencies": {
+		"@wordpress/block-editor": "^14.10.1",
+		"@wordpress/blocks": "^14.4.1",
+		"@wordpress/browserslist-config": "^6.15.0",
+		"@wordpress/i18n": "^5.15.1",
+		"@wordpress/postcss-plugins-preset": "^5.15.1",
+		"@wordpress/scripts": "^30.8.1",
+		"npm-run-all": "^4.1.5"
+	},
+	"scripts": {
+		"build": "wp-scripts build",
+		"start": "wp-scripts start",
+		"format": "wp-scripts format",
+		"lint": "npm-run-all --sequential lint:**",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"lint:readme-md": "wp-scripts lint-md-docs README.md",
+		"lint:styles": "wp-scripts lint-style",
+		"lint:scripts": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update --dist-tag=latest",
+		"check-engines": "wp-scripts check-engines",
+		"check-licenses": "wp-scripts check-licenses",
+		"plugin-zip": "wp-scripts plugin-zip"
+	}
+}

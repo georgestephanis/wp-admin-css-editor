@@ -1,0 +1,23 @@
+body.appearance_page_georgestephanis-custom-css {
+
+	.CodeMirror-wrap {
+		max-width: 800px;
+
+		.cm-content,
+		.cm-gutter {
+			min-height: 150px;
+		}
+
+		.cm-gutters {
+			margin: 1px;
+		}
+
+		.cm-scroller {
+			overflow: auto;
+		}
+
+		.cm-wrap {
+			border: 1px solid #888;
+		}
+	}
+}
