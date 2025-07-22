@@ -1,7 +1,9 @@
 body.appearance_page_georgestephanis-custom-css {
 
+	/* Styles for the WP-generated CodeMirror */
 	.CodeMirror-wrap {
-		max-width: 800px;
+		width: 100%;
+		max-width: 1200px;
 
 		.cm-content,
 		.cm-gutter {
@@ -20,4 +22,31 @@ body.appearance_page_georgestephanis-custom-css {
 			border: 1px solid #888;
 		}
 	}
+
+	/* Styles for React-based CodeMirror */
+
+	div.css-editor-ui {
+		width: 100%;
+		max-width: 1200px;
+	}
+
+	dl.transformed-styles {
+		display: flex;
+		flex-direction: row;
+		gap: 1em;
+
+		width: 100%;
+		max-width: 1200px;
+
+		@media ( max-width: 768px ) {
+			flex-direction: column;
+		}
+
+		dt,
+		dd {
+			margin: 0;
+			flex: 1;
+		}
+	}
+
 }

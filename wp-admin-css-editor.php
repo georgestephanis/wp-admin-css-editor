@@ -29,7 +29,8 @@ add_action( 'admin_enqueue_scripts', function() {
 			'wp-admin-code-editor',
 			plugins_url( 'build/index.js', __FILE__ ),
 			$asset_file['dependencies'],
-    		$asset_file['version']
+			$asset_file['version'],
+			true
 		);
 	}
 });
@@ -96,6 +97,8 @@ function admin_page() {
 			}
 		}
 		?>
+
+		<div id="admin-css-editor-root"></div>
 
 		<h3><?php _e( 'CSS Variables from the Full Site Editor'); ?></h3>
 
