@@ -38,6 +38,25 @@ function rest_api_get_customizer_css(  \WP_Rest_Request $request  ) {
 	);
 }
 
+/**
+ * Get the FSE's CSS Variables.
+ *
+ * @return array
+ */
+function get_core_variables() {
+	$core_variables = array();
+
+	$core_variables_css = \WP_Theme_JSON_Resolver::get_core_data()->get_stylesheet( [ 'variables' ] );
+	if ( preg_match( '#:root\{(.*)\}#', $core_variables_css, $matches ) ) {
+		preg_match_all( '/(--wp-[^:]+): ([^;]+);/', $matches[1], $core_variables_matched, PREG_SET_ORDER );
+		foreach ( $core_variables_matched as list( $match, $property, $value ) ) {
+			$core_variables[ $property ] = $value;
+		}
+	}
+
+	return $core_variables;
+}
+
 add_action( 'admin_menu', function() {
 	add_theme_page(
 		__( 'Theme Custom CSS' ),
@@ -94,8 +113,6 @@ function _admin_page_output_css_editor( $id, $content, $codemirror_settings ) {
 }
 
 function admin_page() {
-	$user_styles = \WP_Theme_JSON_Resolver::get_user_data();
-
 	$codemirror_settings = wp_enqueue_code_editor( [ 'type' => 'text/css' ] );
 	$codemirror_settings['codemirror']['readOnly'] = true;
 
@@ -115,55 +132,8 @@ function admin_page() {
 		}
 		?>
 
-		<h3><?php _e( 'Custom CSS from the Full Site Editor (Newer System)' ); ?></h3>
-
-		<?php
-		$user_styles_stylesheet = $user_styles->get_stylesheet( [ 'custom-css' ] );
-		if ( $user_styles_stylesheet ) {
-			_admin_page_output_css_editor( 'blockeditor-css', $user_styles_stylesheet, $codemirror_settings );
-		} else {
-			_e( 'No Full-Site Editor CSS' );
-		}
-		?>
-
-		<h3><?php _e( 'Custom Block CSS from the Full Site Editor' ); ?></h3>
-
-		<?php
-		$user_styles_raw = $user_styles->get_raw_data();
-		if ( isset( $user_styles_raw, $user_styles_raw['styles'], $user_styles_raw['styles']['blocks'] ) ) {
-			foreach ( $user_styles_raw['styles']['blocks'] as $block_type => $block_properties ) {
-				if ( isset( $block_properties['css'] ) ) {
-					printf( '<h4>%s</h4>', $block_type );
-					_admin_page_output_css_editor( "{$block_type}-css", $block_properties['css'], $codemirror_settings );
-				}
-			}
-		}
-		?>
-
+		<!-- React Root for CodeMirror stuff: -->
 		<div id="admin-css-editor-root"></div>
-
-		<h3><?php _e( 'CSS Variables from the Full Site Editor'); ?></h3>
-
-		<h4>User:</h4>
-
-		<pre><?php
-			echo str_replace(
-				[ '{--',       ';--',       ';}'     ],
-				[ "{\r\n\t--", ";\r\n\t--", ";\r\n}" ],
-				$user_styles->get_stylesheet( [ 'variables' ] )
-			);
-		?></pre>
-
-		<h4>Core:</h4>
-
-		<pre><?php
-			echo str_replace(
-				[ '{--',       ';--',       ';}'     ],
-				[ "{\r\n\t--", ";\r\n\t--", ";\r\n}" ],
-				\WP_Theme_JSON_Resolver::get_core_data()->get_stylesheet( [ 'variables' ] )
-			);
-		?></pre>
-
 	</div>
 	<?php
 }
