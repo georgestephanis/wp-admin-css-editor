@@ -52,18 +52,27 @@ add_action( 'admin_enqueue_scripts', function() {
 	if ( 'appearance_page_georgestephanis-custom-css' === get_current_screen()->id ) {
 		$asset_file = include( plugin_dir_path( __FILE__ ) . 'build/index.asset.php');
 		wp_enqueue_style(
-			'wp-admin-code-editor',
+			'wp-admin-css-editor',
 			plugins_url( 'build/index.css', __FILE__ ),
 			array(),
 			$asset_file['version']
 		);
 
 		wp_enqueue_script(
-			'wp-admin-code-editor',
+			'wp-admin-css-editor',
 			plugins_url( 'build/index.js', __FILE__ ),
 			$asset_file['dependencies'],
 			$asset_file['version'],
 			true
+		);
+
+		wp_localize_script(
+			'wp-admin-css-editor',
+			'GSCustomCss',
+			array(
+				'GlobalStylesId' => \WP_Theme_JSON_Resolver::get_user_data_from_wp_global_styles( null )['ID'],
+				'CoreVariables' => get_core_variables(),
+			)
 		);
 	}
 });
