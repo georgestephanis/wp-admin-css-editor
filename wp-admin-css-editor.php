@@ -5,6 +5,39 @@
  */
 namespace Georgestephanis\CustomCSS;
 
+/**
+ * Initialize our custom REST routes.
+ *
+ * @return void
+ */
+function rest_api_init() {
+	register_rest_route(
+		'gscustomcss/v1',
+		'customizer',
+		array(
+			'methods'             => 'GET',
+			'callback'            => __NAMESPACE__ . '\rest_api_get_customizer_css',
+			'permission_callback' => '__return_true'
+		)
+	);
+}
+add_action( 'rest_api_init', __NAMESPACE__ . '\rest_api_init' );
+
+/**
+ * Get the Customizer's CSS.
+ *
+ * @param \WP_Rest_Request $request The rest request being passed to the api.
+ * @return array
+ */
+function rest_api_get_customizer_css(  \WP_Rest_Request $request  ) {
+	$post = wp_get_custom_css_post();
+
+	return array(
+		'id'  => $post ? $post->id : 0,
+		'css' => wp_get_custom_css(),
+	);
+}
+
 add_action( 'admin_menu', function() {
 	add_theme_page(
 		__( 'Theme Custom CSS' ),
